@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TurkcellSinav2</string>
+    <string name="add_new_payment_type">Yeni Ödeme Tipi Ekle</string>
+    <string name="new_payment_type">Yeni Ödeme Tipi</string>
 </resources>
