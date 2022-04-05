@@ -9,4 +9,6 @@
     <string name="update">Güncelle</string>
     <string name="delete">Sil</string>
     <string name="title_cannot_be_empty">Başlık Girmek Zorunludur</string>
+    <string name="amount">Tutar</string>
+    <string name="date">Tarih</string>
 </resources>

@@ -25,7 +25,7 @@
             android:name=".presentation.ui.add_payment_type.AddNewPaymentTypeActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.add_payment.AddPaymentActivity"
+            android:name=".presentation.ui.add_payment.AddPaymentToTypeActivity"
             android:exported="false" />
     </application>
 
