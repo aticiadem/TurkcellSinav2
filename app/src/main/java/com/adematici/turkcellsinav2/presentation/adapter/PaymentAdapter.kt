@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.adematici.turkcellsinav2.databinding.PaymentItemBinding
 import com.adematici.turkcellsinav2.model.Payment
+import com.adematici.turkcellsinav2.util.listener.PaymentClickListener
 
-class PaymentAdapter : RecyclerView.Adapter<PaymentAdapter.PaymentViewHolder>() {
+class PaymentAdapter(
+    private val clickListener: PaymentClickListener
+) : RecyclerView.Adapter<PaymentAdapter.PaymentViewHolder>() {
 
     private val diffUtil = object : DiffUtil.ItemCallback<Payment>() {
         override fun areItemsTheSame(oldItem: Payment, newItem: Payment): Boolean {
@@ -38,6 +41,9 @@ class PaymentAdapter : RecyclerView.Adapter<PaymentAdapter.PaymentViewHolder>() 
         holder.binding.apply {
             textViewAmount.text = currentData.amount.toString()
             textViewDate.text = currentData.date
+        }
+        holder.binding.root.setOnClickListener {
+            clickListener.onItemClickListener(currentData.id)
         }
     }
 

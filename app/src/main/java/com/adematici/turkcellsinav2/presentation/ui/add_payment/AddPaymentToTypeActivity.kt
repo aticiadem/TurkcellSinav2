@@ -35,7 +35,7 @@ class AddPaymentToTypeActivity : AppCompatActivity() {
         val day = calendar[Calendar.DATE]
         val month = calendar[Calendar.MONTH] + 1
         val year = calendar[Calendar.YEAR]
-        val date = "$day-${month}-$year"
+        val date = "$day.${month}.$year"
         binding.buttonDate.text = date
     }
 
@@ -74,7 +74,7 @@ class AddPaymentToTypeActivity : AppCompatActivity() {
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, monthOfYear)
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                val date = "$dayOfMonth-${monthOfYear + 1}-$year"
+                val date = "$dayOfMonth.${monthOfYear + 1}.$year"
                 binding.buttonDate.text = date
             }
 

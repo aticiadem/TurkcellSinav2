@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import com.adematici.turkcellsinav2.model.Payment
+import com.adematici.turkcellsinav2.util.Constant
 import com.adematici.turkcellsinav2.util.Constant.AMOUNT
 import com.adematici.turkcellsinav2.util.Constant.DATABASE_NAME
 import com.adematici.turkcellsinav2.util.Constant.DATE
@@ -64,6 +65,12 @@ class PaymentDAO(context: Context) {
 
         close()
         return paymentList
+    }
+
+    fun deletePayment(id: Int) {
+        open()
+        paymentDatabase!!.delete(PAYMENT_TABLE, "id = ?", arrayOf(id.toString()))
+        close()
     }
 
 }
