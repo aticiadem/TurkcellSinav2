@@ -4,6 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.add_payment.AddPaymentActivity">
+    tools:context=".presentation.ui.add_payment.AddPaymentToTypeActivity">
+
+    <TextView
+        android:id="@+id/textViewTypeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Elektrik Odemeleri" />
+
+    <EditText
+        android:id="@+id/editTextAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints="@null"
+        android:ems="10"
+        android:hint="@string/amount"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTypeTitle" />
+
+    <Button
+        android:id="@+id/buttonDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:autofillHints="@null"
+        android:ems="10"
+        android:text="@string/date"
+        android:textAllCaps="false"
+        android:textAlignment="textStart"
+        app:layout_constraintEnd_toEndOf="@+id/editTextAmount"
+        app:layout_constraintStart_toStartOf="@+id/editTextAmount"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAmount" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:layout_marginTop="45dp"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="@+id/buttonDate"
+        app:layout_constraintStart_toStartOf="@+id/buttonDate"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

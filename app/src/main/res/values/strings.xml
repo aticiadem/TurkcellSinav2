@@ -2,4 +2,16 @@
     <string name="app_name">TurkcellSinav2</string>
     <string name="add_new_payment_type">Yeni Ödeme Tipi Ekle</string>
     <string name="new_payment_type">Yeni Ödeme Tipi</string>
+    <string name="payment_types">Ödeme Tipleri</string>
+    <string name="payment_title">Ödeme Başlığı (Zorunlu)</string>
+    <string name="period_day">Ödeme Günü (Opsiyonel)</string>
+    <string name="save">Kaydet</string>
+    <string name="update">Güncelle</string>
+    <string name="delete">Sil</string>
+    <string name="title_cannot_be_empty">Başlık Girmek Zorunludur</string>
+    <string name="amount">Tutar</string>
+    <string name="date">Tarih</string>
+    <string name="edit">Düzenle</string>
+    <string name="add_payment">Ödeme Ekle</string>
+    <string name="type_detail">Tip Detayı</string>
 </resources>
