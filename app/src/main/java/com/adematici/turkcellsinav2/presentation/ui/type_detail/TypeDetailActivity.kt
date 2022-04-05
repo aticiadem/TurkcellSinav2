@@ -3,6 +3,7 @@ package com.adematici.turkcellsinav2.presentation.ui.type_detail
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.adematici.turkcellsinav2.R
 import com.adematici.turkcellsinav2.databinding.ActivityTypeDetailBinding
 import com.adematici.turkcellsinav2.presentation.adapter.PaymentAdapter
@@ -15,6 +16,7 @@ class TypeDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTypeDetailBinding
     private lateinit var paymentAdapter: PaymentAdapter
+    private lateinit var viewModel: TypeDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,28 +24,36 @@ class TypeDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         title = getString(R.string.type_detail)
-        val itemId = intent.getIntExtra(PAYMENT_TYPE_ITEM_ID, 0)
+        viewModel = ViewModelProvider(this).get(TypeDetailViewModel::class.java)
+        val paymentId = intent.getIntExtra(PAYMENT_TYPE_ITEM_ID, 0)
 
-        initRecycler()
-        initClickListener(itemId)
+        initRecycler(paymentId)
+        initClickListener(paymentId)
     }
 
-    private fun initRecycler() {
-        // todo delete mock list
+    override fun onResume() {
+        super.onResume()
+        val paymentId = intent.getIntExtra(PAYMENT_TYPE_ITEM_ID, 0)
+        initRecycler(paymentId)
+    }
+
+    private fun initRecycler(paymentId: Int) {
         paymentAdapter = PaymentAdapter()
-        //paymentAdapter.paymentList = list
+        paymentAdapter.paymentList = viewModel.getAllPayment(this, paymentId)
         binding.recyclerView.adapter = paymentAdapter
     }
 
-    private fun initClickListener(id: Int) {
+    private fun initClickListener(paymentId: Int) {
         binding.buttonEdit.setOnClickListener {
             val intent = Intent(this, AddNewPaymentTypeActivity::class.java)
             intent.putExtra(Constant.IS_UPDATE_OR_DELETE, true)
-            intent.putExtra(PAYMENT_TYPE_ITEM_ID, id)
+            intent.putExtra(PAYMENT_TYPE_ITEM_ID, paymentId)
             startActivity(intent)
         }
         binding.buttonAddPayment.setOnClickListener {
-            startActivity(Intent(this, AddPaymentToTypeActivity::class.java))
+            val intent = Intent(this, AddPaymentToTypeActivity::class.java)
+            intent.putExtra(PAYMENT_TYPE_ITEM_ID, paymentId)
+            startActivity(intent)
         }
     }
 

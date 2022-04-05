@@ -3,16 +3,20 @@ package com.adematici.turkcellsinav2.presentation.ui.add_payment
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.adematici.turkcellsinav2.R
 import com.adematici.turkcellsinav2.databinding.ActivityAddPaymentBinding
+import com.adematici.turkcellsinav2.model.Payment
+import com.adematici.turkcellsinav2.util.Constant.PAYMENT_TYPE_ITEM_ID
 import java.util.*
-
 
 class AddPaymentToTypeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddPaymentBinding
     private val calendar: Calendar = Calendar.getInstance()
+    private lateinit var viewModel: AddPaymentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +24,10 @@ class AddPaymentToTypeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         title = getString(R.string.add_payment)
+        val paymentTypeId = intent.getIntExtra(PAYMENT_TYPE_ITEM_ID, 0)
+        viewModel = ViewModelProvider(this).get(AddPaymentViewModel::class.java)
 
-        initClickListener()
+        initClickListener(paymentTypeId)
         getTheDay()
     }
 
@@ -33,14 +39,33 @@ class AddPaymentToTypeActivity : AppCompatActivity() {
         binding.buttonDate.text = date
     }
 
-    private fun initClickListener() {
+    private fun initClickListener(paymentType: Int) {
         binding.buttonSave.setOnClickListener {
-            // todo we will update this function
+            if (checkData()) {
+                val amount = binding.editTextAmount.text.toString().toDouble()
+                val currentDate = binding.buttonDate.text.toString()
+
+                println(paymentType)
+                val payment =
+                    Payment(amount = amount, date = currentDate, paymentType = paymentType)
+                addPaymentToDatabase(payment)
+                finish()
+            } else {
+                Toast.makeText(this, R.string.fill_in_the_blanks, Toast.LENGTH_LONG).show()
+            }
         }
 
         binding.buttonDate.setOnClickListener {
             showCalender()
         }
+    }
+
+    private fun checkData(): Boolean =
+        binding.editTextAmount.text.isNotEmpty() && binding.buttonDate.text.isNotEmpty()
+
+
+    private fun addPaymentToDatabase(payment: Payment) {
+        viewModel.addPayment(this, payment)
     }
 
     private fun showCalender() {

@@ -15,8 +15,7 @@ import com.adematici.turkcellsinav2.util.Constant.PAYMENT_TYPE
 class PaymentDAO(context: Context) {
 
     private var paymentDatabase: SQLiteDatabase? = null
-    private var dbOpenHelper: DatabaseOpenHelper =
-        DatabaseOpenHelper(context, DATABASE_NAME, null, 1)
+    private var dbOpenHelper: DatabaseOpenHelper = DatabaseOpenHelper(context, DATABASE_NAME, null, 1)
 
     private fun open() {
         paymentDatabase = dbOpenHelper.writableDatabase

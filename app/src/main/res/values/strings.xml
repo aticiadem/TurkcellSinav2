@@ -20,4 +20,5 @@
     <string name="delete_data">Veriyi Sil</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
+    <string name="fill_in_the_blanks">Boşlukları Doldurunuz</string>
 </resources>

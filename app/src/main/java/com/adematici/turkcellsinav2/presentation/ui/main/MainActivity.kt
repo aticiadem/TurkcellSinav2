@@ -52,8 +52,9 @@ class MainActivity : AppCompatActivity(), PaymentTypeClickListener {
         }
     }
 
-    override fun onItemClick() {
+    override fun onItemClick(id: Int) {
         val intent = Intent(this, AddPaymentToTypeActivity::class.java)
+        intent.putExtra(PAYMENT_TYPE_ITEM_ID, id)
         startActivity(intent)
     }
 
