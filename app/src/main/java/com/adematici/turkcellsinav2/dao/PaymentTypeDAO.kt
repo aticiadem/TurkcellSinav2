@@ -104,7 +104,7 @@ class PaymentTypeDAO(context: Context) {
                 id = c.getInt(0),
                 title = c.getString(c.getColumnIndex(TITLE)),
                 period = c.getString(c.getColumnIndex(PERIOD)),
-                periodDay = c.getInt(c.getColumnIndex(PERIOD_DAY))
+                periodDay = c.getIntOrNull(c.getColumnIndex(PERIOD_DAY))
             )
         }
         close()
