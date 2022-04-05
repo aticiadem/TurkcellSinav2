@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.adematici.turkcellsinav2.R
 import com.adematici.turkcellsinav2.databinding.ActivityMainBinding
-import com.adematici.turkcellsinav2.presentation.ui.add_payment.AddPaymentToTypeActivity
 import com.adematici.turkcellsinav2.presentation.ui.add_payment_type.AddNewPaymentTypeActivity
 import com.adematici.turkcellsinav2.util.Constant.IS_UPDATE_OR_DELETE
 
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initClickListener() {
         binding.buttonAddNewPaymentType.setOnClickListener {
-            val intent = Intent(this, AddPaymentToTypeActivity::class.java)
+            val intent = Intent(this, AddNewPaymentTypeActivity::class.java)
             intent.putExtra(IS_UPDATE_OR_DELETE, false)
             startActivity(intent)
         }

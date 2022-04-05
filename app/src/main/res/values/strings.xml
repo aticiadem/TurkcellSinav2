@@ -11,4 +11,7 @@
     <string name="title_cannot_be_empty">Başlık Girmek Zorunludur</string>
     <string name="amount">Tutar</string>
     <string name="date">Tarih</string>
+    <string name="edit">Düzenle</string>
+    <string name="add_payment">Ödeme Ekle</string>
+    <string name="type_detail">Tip Detayı</string>
 </resources>

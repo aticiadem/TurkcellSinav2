@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.adematici.turkcellsinav2.R
 import com.adematici.turkcellsinav2.databinding.ActivityAddPaymentBinding
 import java.util.*
 
@@ -17,6 +18,8 @@ class AddPaymentToTypeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        title = getString(R.string.add_payment)
 
         initClickListener()
         getTheDay()
