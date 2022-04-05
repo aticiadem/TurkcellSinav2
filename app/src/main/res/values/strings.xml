@@ -10,9 +10,14 @@
     <string name="update">Güncelle</string>
     <string name="delete">Sil</string>
     <string name="title_cannot_be_empty">Başlık Girmek Zorunludur</string>
+    <string name="enter_a_valid_day">Geçerli Bir Ödeme Günü Giriniz</string>
     <string name="amount">Tutar</string>
     <string name="date">Tarih</string>
     <string name="edit">Düzenle</string>
     <string name="add_payment">Ödeme Ekle</string>
     <string name="type_detail">Tip Detayı</string>
+    <string name="are_you_sure_delete_item">Silme İşlemini Onaylıyor Musunuz?</string>
+    <string name="delete_data">Veriyi Sil</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
 </resources>

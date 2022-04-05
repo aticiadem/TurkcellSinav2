@@ -3,22 +3,23 @@ package com.adematici.turkcellsinav2.presentation.ui.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.adematici.turkcellsinav2.R
 import com.adematici.turkcellsinav2.databinding.ActivityMainBinding
-import com.adematici.turkcellsinav2.model.PaymentType
 import com.adematici.turkcellsinav2.presentation.adapter.PaymentTypesAdapter
 import com.adematici.turkcellsinav2.presentation.ui.add_payment.AddPaymentToTypeActivity
 import com.adematici.turkcellsinav2.presentation.ui.add_payment_type.AddNewPaymentTypeActivity
 import com.adematici.turkcellsinav2.presentation.ui.type_detail.TypeDetailActivity
 import com.adematici.turkcellsinav2.util.Constant.IS_UPDATE_OR_DELETE
-import com.adematici.turkcellsinav2.util.Constant.PAYMENT_TYPE_ITEM
-import com.adematici.turkcellsinav2.util.Period
+import com.adematici.turkcellsinav2.util.Constant.PAYMENT_TYPE_ITEM_ID
 import com.adematici.turkcellsinav2.util.listener.PaymentTypeClickListener
+
 
 class MainActivity : AppCompatActivity(), PaymentTypeClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var paymentTypesAdapter: PaymentTypesAdapter
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,22 +27,20 @@ class MainActivity : AppCompatActivity(), PaymentTypeClickListener {
         setContentView(binding.root)
 
         title = getString(R.string.payment_types)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         initView()
         initClickListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+        initView()
+    }
+
     private fun initView() {
-        // todo delete mock list
-        val list: ArrayList<PaymentType> = arrayListOf(
-            PaymentType(0, "Payment 1", null, null),
-            PaymentType(2, "Payment 2", Period.MONTH.periodName, 23),
-            PaymentType(3, "Payment 3", Period.MONTH.periodName, 2),
-            PaymentType(4, "Payment 4", Period.WEEK.periodName, 3),
-            PaymentType(5, "Payment 5", Period.YEAR.periodName, 233)
-        )
         paymentTypesAdapter = PaymentTypesAdapter(this)
-        paymentTypesAdapter.paymentTypes = list
+        paymentTypesAdapter.paymentTypes = mainViewModel.getAllPaymentType(this)
         binding.recyclerView.adapter = paymentTypesAdapter
     }
 
@@ -58,9 +57,9 @@ class MainActivity : AppCompatActivity(), PaymentTypeClickListener {
         startActivity(intent)
     }
 
-    override fun onViewClick(data: PaymentType) {
+    override fun onViewClick(id: Int) {
         val intent = Intent(this, TypeDetailActivity::class.java)
-        intent.putExtra(PAYMENT_TYPE_ITEM, data)
+        intent.putExtra(PAYMENT_TYPE_ITEM_ID, id)
         startActivity(intent)
     }
 
