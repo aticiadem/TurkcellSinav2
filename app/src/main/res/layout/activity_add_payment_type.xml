@@ -42,7 +42,7 @@
         android:autofillHints="@null"
         android:ems="10"
         android:hint="@string/period_day"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

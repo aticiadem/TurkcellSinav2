@@ -1,20 +1,26 @@
 package com.adematici.turkcellsinav2.presentation.ui.add_payment_type
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.adematici.turkcellsinav2.R
 import com.adematici.turkcellsinav2.databinding.ActivityAddPaymentTypeBinding
 import com.adematici.turkcellsinav2.model.PaymentType
+import com.adematici.turkcellsinav2.presentation.ui.main.MainActivity
 import com.adematici.turkcellsinav2.util.Constant.IS_UPDATE_OR_DELETE
-import com.adematici.turkcellsinav2.util.Constant.PAYMENT_TYPE_ITEM
+import com.adematici.turkcellsinav2.util.Constant.PAYMENT_TYPE_ITEM_ID
+import com.adematici.turkcellsinav2.util.Period
 import com.adematici.turkcellsinav2.util.Period.Companion.getAllPeriods
 
 class AddNewPaymentTypeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddPaymentTypeBinding
+    private lateinit var viewModel: AddNewPaymentTypeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,10 +28,11 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val isUpdateOrDelete = intent.getBooleanExtra(IS_UPDATE_OR_DELETE, false)
-        val item = intent.getSerializableExtra(PAYMENT_TYPE_ITEM) as PaymentType?
+        val itemId = intent.getIntExtra(PAYMENT_TYPE_ITEM_ID, 0)
+        viewModel = ViewModelProvider(this).get(AddNewPaymentTypeViewModel::class.java)
 
         initSpinner()
-        initView(isUpdateOrDelete, item)
+        initView(isUpdateOrDelete, itemId)
         initClickListeners()
     }
 
@@ -39,11 +46,13 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
         binding.spinner.adapter = arrayAdapter
     }
 
-    private fun initView(isUpdateOrDelete: Boolean, item: PaymentType?) {
+    private fun initView(isUpdateOrDelete: Boolean, itemId: Int) {
         if (isUpdateOrDelete) {
             title = getString(R.string.update_payment_type)
 
-            binding.editTextPaymentTitle.setText(item!!.title)
+            val item: PaymentType = viewModel.getSelectedPaymentType(this, itemId)
+
+            binding.editTextPaymentTitle.setText(item.title)
             item.periodDay?.let {
                 binding.editTextPeriodDay.setText(it.toString())
             }
@@ -60,27 +69,102 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
     }
 
     private fun initClickListeners() {
+        val itemId = intent.getIntExtra(PAYMENT_TYPE_ITEM_ID, 0)
         binding.buttonSave.setOnClickListener {
             saveDataToDatabase()
         }
         binding.buttonUpdate.setOnClickListener {
-            // todo update data int the database
+            updateData(itemId)
         }
         binding.buttonDelete.setOnClickListener {
-            // todo show popup and delete
+            deleteData(itemId)
         }
     }
 
     private fun saveDataToDatabase() {
         val title = binding.editTextPaymentTitle.text.toString()
         val periodListItem = binding.spinner.selectedItem.toString()
-        val periodDay = binding.editTextPeriodDay.text.toString()
 
         if (title.isEmpty()) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_LONG).show()
         } else {
-            // todo add data to the database
+            val periodDay = binding.editTextPeriodDay.text.toString()
+            if (binding.editTextPeriodDay.text.isNullOrEmpty()) {
+                val paymentType =
+                    PaymentType(title = title, period = periodListItem, periodDay = null)
+                viewModel.addNewPaymentType(this, paymentType)
+                finish()
+            } else {
+                checkCalenderData(null, title, periodListItem, periodDay.toInt(), false)
+            }
         }
+    }
+
+    private fun checkCalenderData(
+        id: Int?,
+        title: String,
+        periodListItem: String,
+        periodDay: Int,
+        isUpdate: Boolean,
+    ) {
+        if (
+            (periodListItem == Period.WEEK.periodName && periodDay > Period.WEEK.periodMaxValue) ||
+            (periodListItem == Period.MONTH.periodName && periodDay > Period.MONTH.periodMaxValue) ||
+            (periodListItem == Period.YEAR.periodName && periodDay > Period.YEAR.periodMaxValue)
+        ) {
+            Toast.makeText(this, R.string.enter_a_valid_day, Toast.LENGTH_LONG).show()
+        } else {
+            if (isUpdate) {
+                val paymentType =
+                    PaymentType(
+                        id = id!!,
+                        title = title,
+                        period = periodListItem,
+                        periodDay = periodDay
+                    )
+                viewModel.updatePaymentType(this, paymentType)
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                val paymentType =
+                    PaymentType(title = title, period = periodListItem, periodDay = periodDay)
+                viewModel.addNewPaymentType(this, paymentType)
+            }
+            finish()
+        }
+    }
+
+    private fun updateData(id: Int) {
+        val title = binding.editTextPaymentTitle.text.toString()
+        val periodListItem = binding.spinner.selectedItem.toString()
+
+        if (title.isEmpty()) {
+            Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_LONG).show()
+        } else {
+            val periodDay = binding.editTextPeriodDay.text.toString()
+            if (binding.editTextPeriodDay.text.isNullOrEmpty()) {
+                val paymentType =
+                    PaymentType(title = title, period = periodListItem, periodDay = null)
+                viewModel.updatePaymentType(this, paymentType)
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                checkCalenderData(id = id, title, periodListItem, periodDay.toInt(), true)
+            }
+        }
+    }
+
+    private fun deleteData(id: Int) {
+        val adb = AlertDialog.Builder(this)
+        adb.setTitle(R.string.delete_data)
+        adb.setMessage(R.string.are_you_sure_delete_item)
+        adb.setPositiveButton(R.string.yes) { _, _ ->
+            viewModel.deletePaymentType(this, id)
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+        adb.setNegativeButton(R.string.no) { _, _ -> }
+        adb.show()
     }
 
 }

@@ -46,7 +46,7 @@ class PaymentTypesAdapter(
             holder.binding.textViewPeriodDay.text = it.toString()
         }
         holder.binding.buttonAddPayment.setOnClickListener { itemClick.onItemClick() }
-        holder.binding.root.setOnClickListener { itemClick.onViewClick(currentItem) }
+        holder.binding.root.setOnClickListener { itemClick.onViewClick(currentItem.id) }
     }
 
     override fun getItemCount(): Int = paymentTypes.size
