@@ -6,8 +6,11 @@ enum class Period(val periodName: String, val periodMaxValue: Int) {
     YEAR("Yıllık", 365);
 
     companion object {
-        fun getAllPeriods(): Array<Period> {
-            return values()
+        fun getAllPeriods(): List<String> {
+            val list: List<String> = values().map {
+                it.periodName
+            }
+            return list
         }
     }
 }

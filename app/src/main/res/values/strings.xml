@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TurkcellSinav2</string>
     <string name="add_new_payment_type">Yeni Ödeme Tipi Ekle</string>
+    <string name="update_payment_type">Ödeme Tipini Güncelle</string>
     <string name="new_payment_type">Yeni Ödeme Tipi</string>
     <string name="payment_types">Ödeme Tipleri</string>
     <string name="payment_title">Ödeme Başlığı (Zorunlu)</string>

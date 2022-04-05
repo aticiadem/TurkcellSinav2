@@ -7,7 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.adematici.turkcellsinav2.R
 import com.adematici.turkcellsinav2.databinding.ActivityAddPaymentTypeBinding
+import com.adematici.turkcellsinav2.model.PaymentType
 import com.adematici.turkcellsinav2.util.Constant.IS_UPDATE_OR_DELETE
+import com.adematici.turkcellsinav2.util.Constant.PAYMENT_TYPE_ITEM
+import com.adematici.turkcellsinav2.util.Period.Companion.getAllPeriods
 
 class AddNewPaymentTypeActivity : AppCompatActivity() {
 
@@ -18,18 +21,16 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
         binding = ActivityAddPaymentTypeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        title = getString(R.string.add_new_payment_type)
-
         val isUpdateOrDelete = intent.getBooleanExtra(IS_UPDATE_OR_DELETE, false)
+        val item = intent.getSerializableExtra(PAYMENT_TYPE_ITEM) as PaymentType?
 
         initSpinner()
-        initButtons(isUpdateOrDelete)
+        initView(isUpdateOrDelete, item)
         initClickListeners()
     }
 
     private fun initSpinner() {
-        // todo this variables will come in the database
-        val spinnerItems = arrayOf("Odeme Tipi 1", "Odeme Tipi 2")
+        val spinnerItems = getAllPeriods()
         val arrayAdapter = ArrayAdapter(
             this,
             androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
@@ -38,12 +39,20 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
         binding.spinner.adapter = arrayAdapter
     }
 
-    private fun initButtons(isUpdateOrDelete: Boolean) {
+    private fun initView(isUpdateOrDelete: Boolean, item: PaymentType?) {
         if (isUpdateOrDelete) {
+            title = getString(R.string.update_payment_type)
+
+            binding.editTextPaymentTitle.setText(item!!.title)
+            item.periodDay?.let {
+                binding.editTextPeriodDay.setText(it.toString())
+            }
+
             binding.buttonUpdate.visibility = View.VISIBLE
             binding.buttonDelete.visibility = View.VISIBLE
             binding.buttonSave.visibility = View.GONE
         } else {
+            title = getString(R.string.add_new_payment_type)
             binding.buttonUpdate.visibility = View.GONE
             binding.buttonDelete.visibility = View.GONE
             binding.buttonSave.visibility = View.VISIBLE
