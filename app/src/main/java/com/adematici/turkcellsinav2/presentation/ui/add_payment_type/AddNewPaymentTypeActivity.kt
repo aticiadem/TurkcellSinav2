@@ -105,20 +105,17 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
 
     private fun updateData(id: Int) {
         val title = binding.editTextPaymentTitle.text.toString()
-        val periodListItem = binding.spinner.selectedItem.toString()
 
         if (title.isEmpty()) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_LONG).show()
         } else {
             val periodDay = binding.editTextPeriodDay.text.toString()
-            if (binding.editTextPeriodDay.text.isNullOrEmpty()) {
-                val paymentType =
-                    PaymentType(title = title, period = periodListItem, periodDay = null)
-                viewModel.updatePaymentType(this, paymentType)
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            } else {
+            if (!binding.editTextPeriodDay.text.isNullOrEmpty()) {
+                val periodListItem = binding.spinner.selectedItem.toString()
                 checkCalenderData(id = id, title, periodListItem, periodDay.toInt(), true)
+            } else {
+                viewModel.updatePaymentType(this, id, title, null, null)
+                startActivity(Intent(this, MainActivity::class.java))
             }
         }
     }
@@ -138,14 +135,7 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.enter_a_valid_day, Toast.LENGTH_LONG).show()
         } else {
             if (isUpdate) {
-                val paymentType =
-                    PaymentType(
-                        id = id!!,
-                        title = title,
-                        period = periodListItem,
-                        periodDay = periodDay
-                    )
-                viewModel.updatePaymentType(this, paymentType)
+                viewModel.updatePaymentType(this, id!!, title, periodListItem, periodDay)
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {

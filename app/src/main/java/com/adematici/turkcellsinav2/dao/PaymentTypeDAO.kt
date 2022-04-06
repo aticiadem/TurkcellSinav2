@@ -68,17 +68,17 @@ class PaymentTypeDAO(context: Context) {
         close()
     }
 
-    fun updatePaymentType(paymentType: PaymentType) {
+    fun updatePaymentType(id: Int, title: String, period: String?, periodDay: Int?) {
         val cv = ContentValues()
-        cv.put(TITLE, paymentType.title)
-        cv.put(PERIOD, paymentType.period)
-        cv.put(PERIOD_DAY, paymentType.periodDay)
+        cv.put(TITLE, title)
+        cv.put(PERIOD, period)
+        cv.put(PERIOD_DAY, periodDay)
 
         open()
         paymentTypeDatabase!!.update(
-            PAYMENT_TYPE_TABLE, cv, "id = ?", arrayOf(paymentType.id.toString())
+            PAYMENT_TYPE_TABLE, cv, "id = ?", arrayOf(id.toString())
         )
-        //close()
+        close()
     }
 
     fun deletePaymentType(id: Int) {

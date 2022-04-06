@@ -47,6 +47,10 @@ class PaymentTypesAdapter(
         currentItem.periodDay?.let {
             holder.binding.textViewPeriodDay.text = it.toString()
         }
+        if (currentItem.periodDay == null) {
+            holder.binding.textViewPeriod.text = ""
+            holder.binding.textViewPeriodDay.text = ""
+        }
         holder.binding.buttonAddPayment.setOnClickListener { itemClick.onItemClick(currentItem.id) }
         holder.binding.root.setOnClickListener { itemClick.onViewClick(currentItem.id) }
     }
