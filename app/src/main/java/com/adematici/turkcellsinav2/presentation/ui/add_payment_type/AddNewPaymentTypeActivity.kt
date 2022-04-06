@@ -57,14 +57,18 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
                 binding.editTextPeriodDay.setText(it.toString())
             }
 
-            binding.buttonUpdate.visibility = View.VISIBLE
-            binding.buttonDelete.visibility = View.VISIBLE
-            binding.buttonSave.visibility = View.GONE
+            binding.apply {
+                buttonUpdate.visibility = View.VISIBLE
+                buttonDelete.visibility = View.VISIBLE
+                buttonSave.visibility = View.GONE
+            }
         } else {
             title = getString(R.string.add_new_payment_type)
-            binding.buttonUpdate.visibility = View.GONE
-            binding.buttonDelete.visibility = View.GONE
-            binding.buttonSave.visibility = View.VISIBLE
+            binding.apply {
+                buttonUpdate.visibility = View.GONE
+                buttonDelete.visibility = View.GONE
+                buttonSave.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -84,7 +88,6 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
     private fun saveDataToDatabase() {
         val title = binding.editTextPaymentTitle.text.toString()
         val periodListItem = binding.spinner.selectedItem.toString()
-
         if (title.isEmpty()) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_LONG).show()
         } else {
@@ -96,6 +99,26 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
                 finish()
             } else {
                 checkCalenderData(null, title, periodListItem, periodDay.toInt(), false)
+            }
+        }
+    }
+
+    private fun updateData(id: Int) {
+        val title = binding.editTextPaymentTitle.text.toString()
+        val periodListItem = binding.spinner.selectedItem.toString()
+
+        if (title.isEmpty()) {
+            Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_LONG).show()
+        } else {
+            val periodDay = binding.editTextPeriodDay.text.toString()
+            if (binding.editTextPeriodDay.text.isNullOrEmpty()) {
+                val paymentType =
+                    PaymentType(title = title, period = periodListItem, periodDay = null)
+                viewModel.updatePaymentType(this, paymentType)
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                checkCalenderData(id = id, title, periodListItem, periodDay.toInt(), true)
             }
         }
     }
@@ -131,26 +154,6 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
                 viewModel.addNewPaymentType(this, paymentType)
             }
             finish()
-        }
-    }
-
-    private fun updateData(id: Int) {
-        val title = binding.editTextPaymentTitle.text.toString()
-        val periodListItem = binding.spinner.selectedItem.toString()
-
-        if (title.isEmpty()) {
-            Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_LONG).show()
-        } else {
-            val periodDay = binding.editTextPeriodDay.text.toString()
-            if (binding.editTextPeriodDay.text.isNullOrEmpty()) {
-                val paymentType =
-                    PaymentType(title = title, period = periodListItem, periodDay = null)
-                viewModel.updatePaymentType(this, paymentType)
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            } else {
-                checkCalenderData(id = id, title, periodListItem, periodDay.toInt(), true)
-            }
         }
     }
 

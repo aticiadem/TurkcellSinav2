@@ -31,25 +31,10 @@ class AddPaymentToTypeActivity : AppCompatActivity() {
         getTheDay()
     }
 
-    private fun getTheDay() {
-        val day = calendar[Calendar.DATE]
-        val month = calendar[Calendar.MONTH] + 1
-        val year = calendar[Calendar.YEAR]
-        val date = "$day.${month}.$year"
-        binding.buttonDate.text = date
-    }
-
     private fun initClickListener(paymentType: Int) {
         binding.buttonSave.setOnClickListener {
             if (checkData()) {
-                val amount = binding.editTextAmount.text.toString().toDouble()
-                val currentDate = binding.buttonDate.text.toString()
-
-                println(paymentType)
-                val payment =
-                    Payment(amount = amount, date = currentDate, paymentType = paymentType)
-                addPaymentToDatabase(payment)
-                finish()
+                addPaymentToDatabase(paymentType)
             } else {
                 Toast.makeText(this, R.string.fill_in_the_blanks, Toast.LENGTH_LONG).show()
             }
@@ -60,13 +45,18 @@ class AddPaymentToTypeActivity : AppCompatActivity() {
         }
     }
 
+    private fun addPaymentToDatabase(paymentType: Int) {
+        val amount = binding.editTextAmount.text.toString().toDouble()
+        val currentDate = binding.buttonDate.text.toString()
+
+        val payment =
+            Payment(amount = amount, date = currentDate, paymentType = paymentType)
+        viewModel.addPayment(this, payment)
+        finish()
+    }
+
     private fun checkData(): Boolean =
         binding.editTextAmount.text.isNotEmpty() && binding.buttonDate.text.isNotEmpty()
-
-
-    private fun addPaymentToDatabase(payment: Payment) {
-        viewModel.addPayment(this, payment)
-    }
 
     private fun showCalender() {
         val dateListener =
@@ -88,6 +78,14 @@ class AddPaymentToTypeActivity : AppCompatActivity() {
 
         datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
         datePickerDialog.show()
+    }
+
+    private fun getTheDay() {
+        val day = calendar[Calendar.DATE]
+        val month = calendar[Calendar.MONTH] + 1
+        val year = calendar[Calendar.YEAR]
+        val date = "$day.${month}.$year"
+        binding.buttonDate.text = date
     }
 
 }

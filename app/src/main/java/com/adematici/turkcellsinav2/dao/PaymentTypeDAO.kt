@@ -17,7 +17,8 @@ import com.adematici.turkcellsinav2.util.Constant.TITLE
 class PaymentTypeDAO(context: Context) {
 
     private var paymentTypeDatabase: SQLiteDatabase? = null
-    private var dbOpenHelper: DatabaseOpenHelper = DatabaseOpenHelper(context, DATABASE_NAME, null, 1)
+    private var dbOpenHelper: DatabaseOpenHelper =
+        DatabaseOpenHelper(context, DATABASE_NAME, null, 1)
 
     private fun open() {
         paymentTypeDatabase = dbOpenHelper.writableDatabase
@@ -75,12 +76,9 @@ class PaymentTypeDAO(context: Context) {
 
         open()
         paymentTypeDatabase!!.update(
-            PAYMENT_TYPE_TABLE,
-            cv,
-            "id = ?",
-            arrayOf(paymentType.id.toString())
+            PAYMENT_TYPE_TABLE, cv, "id = ?", arrayOf(paymentType.id.toString())
         )
-        close()
+        //close()
     }
 
     fun deletePaymentType(id: Int) {

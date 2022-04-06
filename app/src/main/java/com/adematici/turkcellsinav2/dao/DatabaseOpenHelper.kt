@@ -17,7 +17,7 @@ class DatabaseOpenHelper(
         val paymentTypeTable =
             "CREATE TABLE $PAYMENT_TYPE_TABLE(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT NOT NULL, period TEXT, period_day INTEGER)"
         val paymentTable =
-            "CREATE TABLE $PAYMENT_TABLE(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, amount DOUBLE, date TEXT, payment_type INTEGER)"
+            "CREATE TABLE $PAYMENT_TABLE(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, amount DOUBLE, date TEXT, payment_type INTEGER REFERENCES $PAYMENT_TYPE_TABLE (id))"
 
         db.execSQL(paymentTypeTable)
         db.execSQL(paymentTable)

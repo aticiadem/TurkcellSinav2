@@ -41,7 +41,9 @@ class PaymentTypesAdapter(
     override fun onBindViewHolder(holder: PaymentTypesViewHolder, position: Int) {
         val currentItem = paymentTypes[position]
         holder.binding.textViewTitle.text = currentItem.title
-        holder.binding.textViewPeriod.text = currentItem.period ?: ""
+        currentItem.period?.let {
+            holder.binding.textViewPeriod.text = currentItem.period
+        }
         currentItem.periodDay?.let {
             holder.binding.textViewPeriodDay.text = it.toString()
         }
