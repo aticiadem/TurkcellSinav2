@@ -110,11 +110,11 @@ class AddNewPaymentTypeActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_LONG).show()
         } else {
             val periodDay = binding.editTextPeriodDay.text.toString()
+            val periodListItem = binding.spinner.selectedItem.toString()
             if (!binding.editTextPeriodDay.text.isNullOrEmpty()) {
-                val periodListItem = binding.spinner.selectedItem.toString()
                 checkCalenderData(id = id, title, periodListItem, periodDay.toInt(), true)
             } else {
-                viewModel.updatePaymentType(this, id, title, null, null)
+                viewModel.updatePaymentType(this, id, title, periodListItem, null)
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }
